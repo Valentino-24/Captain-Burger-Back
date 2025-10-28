@@ -3,31 +3,29 @@ package com.example.demo.entity.mapper;
 import com.example.demo.entity.dto.UsuarioDTO;
 import com.example.demo.entity.Usuario;
 
-public class UsuarioMapper {
+public final class UsuarioMapper {
 
-    public static UsuarioDTO toDTO(Usuario usuario) {
-        if (usuario == null) return null;
+    private UsuarioMapper() {} // utilitario, no instanciable
 
-        UsuarioDTO dto = new UsuarioDTO();
-        dto.setId(usuario.getId());
-        dto.setNombre(usuario.getNombre());
-        dto.setApellido(usuario.getApellido());
-        dto.setMail(usuario.getMail());
-        dto.setCelular(usuario.getCelular());
-        dto.setRol(usuario.getRol());
-        return dto;
+    public static UsuarioDTO toDto(Usuario u) {
+        if (u == null) return null;
+        return UsuarioDTO.builder()
+                .id(u.getId())
+                .nombre(u.getNombre())
+                .email(u.getEmail())
+                .rol(u.getRol())
+                // .password(u.getPassword()) // NO expongas password en respuestas públicas
+                .build();
     }
 
     public static Usuario toEntity(UsuarioDTO dto) {
         if (dto == null) return null;
-
-        Usuario usuario = new Usuario();
-        usuario.setId(dto.getId());
-        usuario.setNombre(dto.getNombre());
-        usuario.setApellido(dto.getApellido());
-        usuario.setMail(dto.getMail());
-        usuario.setCelular(dto.getCelular());
-        usuario.setRol(dto.getRol());
-        return usuario;
+        return Usuario.builder()
+                .id(dto.getId())
+                .nombre(dto.getNombre())
+                .email(dto.getEmail())
+                .password(dto.getPassword()) // para creación/actualización sí hace falta
+                .rol(dto.getRol())
+                .build();
     }
 }

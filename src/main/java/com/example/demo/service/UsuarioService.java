@@ -3,52 +3,63 @@ package com.example.demo.service;
 import com.example.demo.entity.dto.UsuarioDTO;
 import com.example.demo.entity.Usuario;
 import com.example.demo.entity.mapper.UsuarioMapper;
-import com.example.demo.repository.UsuarioRepositorio;
+import com.example.demo.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
 
-    private final UsuarioRepositorio usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public UsuarioService(UsuarioRepositorio usuarioRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
+
 
     public List<UsuarioDTO> listarTodos() {
         return usuarioRepository.findAll()
                 .stream()
-                .map(UsuarioMapper::toDTO)
+                .map(UsuarioMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     public UsuarioDTO obtenerPorId(Long id) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Usuario no encontrado con id: " + id));
-        return UsuarioMapper.toDTO(usuario);
+        return UsuarioMapper.toDto(usuario);
     }
 
-    public UsuarioDTO crear(Usuario usuario) {
-        Usuario guardado = usuarioRepository.save(usuario);
-        return UsuarioMapper.toDTO(guardado);
+    public UsuarioDTO crear(UsuarioDTO usuarioDto) {
+        System.out.println("DTO recibido: " + usuarioDto);
+        System.out.println("DTO.password = " + usuarioDto.getPassword());
+
+        // mapear manualmente y comprobar
+        Usuario u = new Usuario();
+        u.setNombre(usuarioDto.getNombre());
+        u.setEmail(usuarioDto.getEmail());
+        u.setPassword(usuarioDto.getPassword()); // <- fijate qué imprime esto
+        System.out.println("Entidad antes de save, password = " + u.getPassword());
+
+        Usuario guardado = usuarioRepository.save(u); // aquí falla si password == null
+        return UsuarioMapper.toDto(guardado);
     }
+
 
     public UsuarioDTO actualizar(Long id, UsuarioDTO dto) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Usuario no encontrado con id: " + id));
 
         usuario.setNombre(dto.getNombre());
-        usuario.setApellido(dto.getApellido());
-        usuario.setMail(dto.getMail());
-        usuario.setCelular(dto.getCelular());
+        usuario.setEmail(dto.getEmail());
         usuario.setRol(dto.getRol());
 
         Usuario actualizado = usuarioRepository.save(usuario);
-        return UsuarioMapper.toDTO(actualizado);
+        return UsuarioMapper.toDto(actualizado);
     }
 
     public void borrar(Long id) {
@@ -61,13 +72,12 @@ public class UsuarioService {
     public void cambiarContrasena(Long id, String nuevaContrasena) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Usuario no encontrado con id: " + id));
-        usuario.setContraseña(nuevaContrasena);
+        usuario.setPassword(nuevaContrasena);
         usuarioRepository.save(usuario);
     }
 
-    public UsuarioDTO buscarPorMail(String mail) {
-        Usuario usuario = usuarioRepository.findByMail(mail)
-                .orElseThrow(() -> new NoSuchElementException("Usuario no encontrado con mail: " + mail));
-        return UsuarioMapper.toDTO(usuario);
+    public Usuario obtenerPorEmail(String mail) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(mail);
+        return usuarioOpt.orElse(null);
     }
 }

@@ -2,22 +2,31 @@ package com.example.demo.entity;
 
 import com.example.demo.entity.enums.Rol;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Setter
+@Getter
 @Entity
 @Table(name="Usuarios")
 
 @NoArgsConstructor
-@Getter
-@Setter
+@AllArgsConstructor
+@Builder
+
 public class Usuario {
-    public Long id;
-    public String nombre;
-    public String apellido;
-    public String mail;
-    public int celular;
-    public String contraseña;
-    public Rol rol;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String nombre;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Rol rol = Rol.USUARIO;
 }
