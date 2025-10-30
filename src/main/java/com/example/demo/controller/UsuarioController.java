@@ -26,15 +26,6 @@ public class UsuarioController {
     public List<UsuarioDTO> listar() {
         return usuarioService.listarTodos();
     }
-
-/*    @PostMapping("/login")
-    public ResponseEntity<UsuarioDTO> login(@RequestBody Usuario request) {
-        UsuarioDTO usuario = usuarioService.obtenerPorEmail(request.getEmail());
-        if (usuario == null) {
-            return ResponseEntity.status(401).body(null);
-        }
-        return ResponseEntity.ok(usuario);
-    }*/
     @PostMapping("/login")
     public ResponseEntity<UsuarioDTO> login(@RequestBody Usuario request){
         Usuario usuario = usuarioService.obtenerPorEmailUser(request.getEmail());
