@@ -1,30 +1,30 @@
 package com.example.demo.entity.mapper;
 
-import com.example.demo.entity.dto.UsuarioDTO;
+
 import com.example.demo.entity.Usuario;
+import com.example.demo.entity.dto.UsuarioDTO;
+import org.springframework.stereotype.Component;
 
-public final class UsuarioMapper {
+@Component
+public class UsuarioMapper {
 
-    private UsuarioMapper() {} // utilitario, no instanciable
-
-    public static UsuarioDTO toDto(Usuario u) {
-        if (u == null) return null;
+    public UsuarioDTO toDto(Usuario usuario) {
+        if (usuario == null) return null;
         return UsuarioDTO.builder()
-                .id(u.getId())
-                .nombre(u.getNombre())
-                .email(u.getEmail())
-                .rol(u.getRol())
-                // .password(u.getPassword()) // NO expongas password en respuestas públicas
+                .id(usuario.getId())
+                .nombre(usuario.getNombre())
+                .email(usuario.getEmail())
+                .password(usuario.getPassword())
+                .rol(usuario.getRol())
                 .build();
     }
 
-    public static Usuario toEntity(UsuarioDTO dto) {
+    public Usuario toEntity(UsuarioDTO dto) {
         if (dto == null) return null;
         return Usuario.builder()
-                .id(dto.getId())
                 .nombre(dto.getNombre())
                 .email(dto.getEmail())
-                .password(dto.getPassword()) // para creación/actualización sí hace falta
+                .password(dto.getPassword())
                 .rol(dto.getRol())
                 .build();
     }
