@@ -66,7 +66,9 @@ public class ProductoImpl implements ProductoService {
         producto.setNombre(productoDTO.getNombre());
         producto.setDescripcion(productoDTO.getDescripcion());
         producto.setPrecio(productoDTO.getPrecio());
+        producto.setStock(productoDTO.getStock());
         producto.setImagenURL(productoDTO.getImagenURL());
+        producto.setDisponible(productoDTO.isDisponible());
 
         if (productoDTO.getCategoriaId() != null) {
             Categoria categoria = categoriaRepository.findById(productoDTO.getCategoriaId()).orElse(null);

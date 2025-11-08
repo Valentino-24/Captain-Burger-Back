@@ -15,8 +15,10 @@ public class ProductoMapper {
                 .nombre(p.getNombre())
                 .descripcion(p.getDescripcion())
                 .precio(p.getPrecio())
+                .stock(p.getStock())
                 .categoriaId(categoriaId)
                 .imagenURL(p.getImagenURL())
+                .disponible(p.isDisponible())
                 .build();
     }
 
@@ -28,7 +30,9 @@ public class ProductoMapper {
                 .nombre(dto.getNombre())
                 .descripcion(dto.getDescripcion())
                 .precio(dto.getPrecio())
+                .stock(dto.getStock())
                 .imagenURL(dto.getImagenURL())
+                .disponible(dto.isDisponible())
                 .build();
     }
 }

@@ -28,5 +28,11 @@ public class Producto {
     private Categoria categoria;
 
     @Column(nullable = false)
+    private int stock;
+
+    @Column(nullable = false)
     private String imagenURL;
+
+    @Column(nullable = false)
+    private boolean disponible;
 }

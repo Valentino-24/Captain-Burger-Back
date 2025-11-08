@@ -12,8 +12,8 @@ public class ProductoDTO {
     public String nombre;
     public String descripcion;
     public Double precio;
-    // Exponemos la categoría por su id (compatible con el front que usa categoriaId)
     public Long categoriaId;
-    // Nombre del campo para URL de imagen coincide con tu entidad
+    public int stock;
     public String imagenURL;
+    public boolean disponible;
 }

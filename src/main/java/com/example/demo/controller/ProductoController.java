@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/productos")
-@CrossOrigin(origins = "http://localhost:5173") // ajustá según el origen de tu front
+@CrossOrigin(origins = "http://localhost:5173")
 public class ProductoController {
 
     @Autowired
@@ -31,7 +31,6 @@ public class ProductoController {
     @PostMapping
     public ResponseEntity<ProductoDTO> crear(@RequestBody ProductoDTO productoDTO) {
         ProductoDTO creado = productoService.crear(productoDTO);
-        // Construimos Location (ej: /productos/{id})
         if (creado == null) return ResponseEntity.badRequest().build();
         return ResponseEntity.created(URI.create("/productos/" + creado.getId())).body(creado);
     }
